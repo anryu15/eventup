@@ -1,0 +1,8 @@
+anryu
+Account id: anryu
+メールアドレス: anryu.15@gmail.com
+Ryutaro
+Generated token 2d771f0d33bf0450bd6177725d25057ce8904d33 for user anryu
+
+
+API関連はhttps://docs.google.com/document/d/1cSqCME6w8Kq9PmvVO9-ut-PurRrX-P_boyAUYJoY1XU/edit?tab=t.0に記載

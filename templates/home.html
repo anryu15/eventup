@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+
+{% block title %}Event List{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Event List</h1>
+<div class="container">
+    {% for event in events %}
+        <div class="media mb-4 p-3 border rounded">
+            {% if event.organizer.profile_picture %}
+                <img src="{{ event.organizer.profile_picture.url }}" alt="{{ event.organizer.username }}" class="mr-3 rounded-circle" style="width: 64px; height: 64px; object-fit: cover;">
+            {% else %}
+                <img src="https://via.placeholder.com/64" alt="No Image" class="mr-3 rounded-circle">
+            {% endif %}
+            <div class="media-body">
+                <h5 class="mt-0">{{ event.title }}</h5>
+                <p class="mb-1 text-muted d-flex justify-content-between">
+                    <span>@{{ event.organizer.username }} &middot; {{ event.created_at|date:"M d, Y" }}</span>
+                    <span>{{ event.participants.count }}/{{ event.capacity }}</span>
+                </p>
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="img-fluid rounded mb-2" style="max-height: 300px; object-fit: cover;">
+                {% endif %}
+                <p class="mb-1">イベント実施日　：　{{ event.event_date }}</p>
+                <p class="mb-1">イベント締切日　：　{{ event.registration_deadline }}</p>
+                
+                <!-- <p>{{ event.description|markdownify }}</p> -->
+
+                <p>
+                    {% for hashtag in event.hashtags.all %}
+                        <a href="{% url 'event_search' %}?hashtag={{ hashtag.name }}" class="text-primary">#{{ hashtag.name }}</a>
+                        {% if not forloop.last %} {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="d-flex justify-content-between">
+                    <a href='{% url 'event_detail' event.pk %}' class="btn btn-outline-primary btn-sm">View Details</a>
+                    <!-- <button class="btn btn-outline-secondary btn-sm">Join Event</button> -->
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No events available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+

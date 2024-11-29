@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Profile of {{ user_profile.username }}</h2>
+{% if user_profile.profile_picture %}
+    <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.username }}" class="rounded" style="width: 150px; height: 150px; object-fit: cover;">
+{% endif %}
+<p><strong>Username:</strong> {{ user_profile.username }}</p>
+<p><strong>Email:</strong> {{ user_profile.email }}</p>
+<p><strong>Bio:</strong> {{ user_profile.bio }}</p>
+<p><strong>Preferred Region:</strong> {{ user_profile.preferred_region }}</p>
+<a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+{% endblock %}

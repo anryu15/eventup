@@ -1,0 +1,8 @@
+.chat-box {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+.chat-box p {
+    margin-bottom: 0.5rem;
+}

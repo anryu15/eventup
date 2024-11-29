@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Search Results{% if hashtag %} for #{{ hashtag }}{% endif %}</h1>
+<div class="container">
+    {% for event in events %}
+        <div class="media mb-4 p-3 border rounded">
+            <h5 class="mt-0">{{ event.title }}</h5>
+            <p>@{{ event.organizer.username }} &middot; {{ event.created_at|date:"M d, Y" }}</p>
+        </div>
+    {% empty %}
+        <p>No events found{% if hashtag %} for #{{ hashtag }}{% endif %}.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Event Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ event.title }}</h1>
+    {% if event.image %}
+        <img src="{{ event.image.url }}" alt="{{ event.title }}" class="img-fluid rounded mb-4" style="max-height: 500px; object-fit: cover;">
+    {% endif %}
+    <p class="text-muted">
+        Organized by @{{ event.organizer.username }}
+    </p>
+    <p>{{ event.event_date }}</p>
+    <p><strong>開催地</strong> {{ event.location }}</p>
+    <p><strong>参加者 </strong> {{ event.participants.count }}/{{ event.capacity }}</p>
+    <p><strong>イベント締切日 </strong> {{ event.registration_deadline }}</p>
+    <p>{{ event.description|markdownify }}</p>
+    <!-- ハッシュタグ -->
+    <p>
+        {% for hashtag in event.hashtags.all %}
+            <a href="{% url 'event_search' %}?hashtag={{ hashtag.name }}" class="text-primary">#{{ hashtag.name }}</a>
+            {% if not forloop.last %} {% endif %}
+        {% endfor %}
+    </p>
+    <div class="mt-4 d-flex align-items-center">
+        {% if user.is_authenticated %}
+            {% if user in event.participants.all %}
+                <form method="post" action="{% url 'join_event' event.pk %}" class="mr-2">
+                    {% csrf_token %}
+                    <a href="{% url 'chat_room' event.pk %}" class="btn btn-secondary">Chatへ</a>
+                </form>
+            {% elif event.is_full %}
+                <p>This event is full.</p>
+            {% else %}
+                <form method="post" action="{% url 'join_event' event.pk %}" class="mr-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Join Event</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <p><a href="{% url 'login' %}?next={% url 'event_detail' event.pk %}" class="btn btn-primary">Login to Join</a></p>
+        {% endif %}
+        <button class="btn btn-info" onclick="copyToClipboard()">Share Event</button>
+    </div>
+</div>
+
+<script src="{% static 'js/event.js' %}"></script>
+
+{% endblock %}
